@@ -41,7 +41,10 @@ query = query[:-2]+');'
 cursor.execute(query)
 
 ## converting dataframe to table in SQL
-query = "INSERT INTO dbo.tablename VALUES (%s, ...,  %s);"
+makeStringQuery = ["%s"]*len(df.keys())
+makeStringQuery = ', '.join(makeStringQuery)
+makeStringQuery = "(" + makeStringQuery + ");"
+query = "INSERT INTO dbo.tablename VALUES " + makeStringQuery
 data  = tuple(map(tuple, df.values))
 
 cursor.executemany(query, data)
